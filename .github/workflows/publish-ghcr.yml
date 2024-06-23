@@ -13,6 +13,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build and push the Image
         run: |
-          docker login --username ${{ github.actor }} --password ${{ secrets.GH_PAT }}
+          docker login --username ${{ github.actor }} --password ${{ secrets.GH_PAT }} ghcr.io
           docker build --tag ghcr.io/${{ github.actor }}/talk-booking:cicd-python3.11-slim ci_cd/python/
           docker push ghcr.io/${{ github.actor }}/talk-booking:cicd-python3.11-slim
