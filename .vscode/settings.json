@@ -1,0 +1,23 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/services/talk_booking/.venv/bin/python",
+
+  "black-formatter.interpreter": [
+    "${workspaceFolder}/services/talk_booking/.venv/bin/python"
+  ],
+  "black-formatter.path": [
+    "${workspaceFolder}/services/talk_booking/.venv/bin/black"
+  ],
+
+  "isort.path": [
+    "${workspaceFolder}/services/talk_booking/.venv/bin/isort"
+  ],
+
+  "isort.args": ["--profile", "black"],
+
+  "flake8.path": [
+    "${workspaceFolder}/services/talk_booking/.venv/bin/flake8"
+  ],
+  "flake8.interpreter": [
+    "${workspaceFolder}/services/talk_booking/.venv/bin/python"
+  ]
+}
