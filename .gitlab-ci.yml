@@ -1,0 +1,24 @@
+stages:
+  - docker
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+
+cache:
+  key: ${CI_JOB_NAME}
+  paths:
+    - ${CI_PROJECT_DIR}/services/talk_booking/.venv/
+
+build-python-ci-image:
+  image: docker:24.0.6
+  services:
+    - docker:24.0.6-dind
+  stage: docker
+  before_script:
+    - cd ci_cd/python/
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t registry.gitlab.com/davidgranados1/talk-booking:cicd-python3.11-slim .
+    - docker push registry.gitlab.com/davidgranados1/talk-booking:cicd-python3.11-slim
