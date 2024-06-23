@@ -39,7 +39,9 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
-      run: |
-        cd ci_cd/python/
-        docker build -t $REGISTRY/${{ github.repository }}/$IMAGE_NAME:cicd-python3.11-slim .
-        docker push $REGISTRY/${{ github.repository }}/$IMAGE_NAME:cicd-python3.11-slim
+      uses: docker/build-push-action@v2
+      with:
+        context: ci_cd/python/
+        file: ci_cd/python/Dockerfile
+        push: true
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cicd-python3.11-slim
