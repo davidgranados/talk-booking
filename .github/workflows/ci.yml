@@ -35,4 +35,4 @@ jobs:
       with:
         context: ci_cd/python/
         push: true
-        tags: ${{ env.IMAGE_NAME }}:cicd-python3.11-slim
+        tags: ${{ env.IMAGE_NAME }}:latest
