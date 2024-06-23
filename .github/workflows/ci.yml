@@ -9,6 +9,9 @@ jobs:
   build-python-ci-image:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     env:
       DOCKER_DRIVER: overlay2
