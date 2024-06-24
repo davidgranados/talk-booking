@@ -1,6 +1,9 @@
 stages:
   - docker
   - test
+  - validate
+  - plan
+  - apply
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -28,4 +31,5 @@ build-python-ci-image:
       changes:
         - ci_cd/python/Dockerfile
 include:
+  - local: /infrastructure/global/vpc/ci-cd.yml
   - local: /services/talk_booking/ci-cd.yml
