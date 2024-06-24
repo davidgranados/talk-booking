@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'ci_cd/python/Dockerfile'
-  pull_request:
-    branches:
-      - main
-
 
 env:
   DOCKER_DRIVER: overlay2
@@ -27,7 +21,6 @@ permissions:
 jobs:
   build-python-ci-image:
     name: Build and Push Docker Image
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       DOCKER_DRIVER: overlay2
@@ -62,7 +55,6 @@ jobs:
   service-talk-booking-code-quality:
     needs: build-python-ci-image
     name: Code Quality
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/davidgranados/talk-booking:latest
@@ -86,3 +78,27 @@ jobs:
       - name: Run Isort
         run: |
           poetry run isort . --check-only --profile black
+
+  service-talk-booking-tests:
+    needs: build-python-ci-image
+    name: Run Tests
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/davidgranados/talk-booking:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python environment
+        run: |
+          cd services/talk_booking/
+          poetry install
+
+      - name: Run Tests
+        run: |
+          poetry run python -m pytest --junitxml=report.xml --cov=./ --cov-report=xml tests/unit tests/integration
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
