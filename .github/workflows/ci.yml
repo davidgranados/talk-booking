@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'ci_cd/python/Dockerfile'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'services/talk_booking/**/*'
+
 
 env:
   DOCKER_DRIVER: overlay2
@@ -21,6 +29,7 @@ permissions:
 jobs:
   build-python-ci-image:
     name: Build and Push Docker Image
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       DOCKER_DRIVER: overlay2
@@ -55,6 +64,7 @@ jobs:
   service-talk-booking-code-quality:
     needs: build-python-ci-image
     name: Code Quality
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/davidgranados/talk-booking:latest
