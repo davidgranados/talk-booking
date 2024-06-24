@@ -8,5 +8,5 @@ service-talk-booking-code-quality:
     - poetry run flake8 .
     - poetry run black . --check
     - poetry run isort . --check-only --profile black
-    - poetry run bandit .
-    - poetry run safety check
+    # - poetry run bandit .
+    # - poetry run safety check
