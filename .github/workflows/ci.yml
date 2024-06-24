@@ -41,6 +41,7 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
   service-talk-booking-code-quality:
+    needs: build-python-ci-image
     name: Code Quality
     runs-on: ubuntu-latest
     steps:
