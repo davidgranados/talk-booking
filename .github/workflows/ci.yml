@@ -54,7 +54,7 @@ jobs:
         run: |
           cd services/talk_booking/
           poetry install
-          source .venv/bin/activate
+          . .venv/bin/activate
 
       - name: Run Flake8
         run: |
@@ -83,7 +83,7 @@ jobs:
         run: |
           cd services/talk_booking/
           poetry install
-          source .venv/bin/activate
+          . .venv/bin/activate
 
       - name: Run Tests
         run: |
