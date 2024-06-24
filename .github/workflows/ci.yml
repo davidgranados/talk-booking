@@ -54,19 +54,18 @@ jobs:
         run: |
           cd services/talk_booking/
           poetry install
-          . .venv/bin/activate
 
       - name: Run Flake8
         run: |
-          flake8 .
+          poetry run flake8 .
 
       - name: Run Black
         run: |
-          black . --check
+          poetry run black . --check
 
       - name: Run Isort
         run: |
-          isort . --check-only --profile black
+          poetry run isort . --check-only --profile black
 
   service-talk-booking-tests:
     needs: build-python-ci-image
@@ -83,11 +82,10 @@ jobs:
         run: |
           cd services/talk_booking/
           poetry install
-          . .venv/bin/activate
 
       - name: Run Tests
         run: |
-          python -m pytest --junitxml=report.xml --cov=./ --cov-report=xml tests/unit tests/integration
+          poetry run python -m pytest --junitxml=report.xml --cov=./ --cov-report=xml tests/unit tests/integration
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
