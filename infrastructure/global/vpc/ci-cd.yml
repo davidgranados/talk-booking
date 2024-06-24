@@ -17,6 +17,10 @@ vpc-validate:
   script:
     - gitlab-terraform init
     - gitlab-terraform validate
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+        - infrastructure/global/vpc/**/*
 
 vpc-plan:
   extends: .vpc-job
@@ -32,6 +36,10 @@ vpc-plan:
       - ${TF_ROOT}/plan.cache
     reports:
       terraform: ${TF_ROOT}/plan.json
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+        - infrastructure/global/vpc/**/*
 
 vpc-apply:
   extends: .vpc-job
@@ -45,3 +53,9 @@ vpc-apply:
   dependencies:
     - vpc-plan
   when: manual
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main")'
+      when: manual
+      changes:
+        - infrastructure/global/vpc/**/*
+
