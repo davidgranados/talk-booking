@@ -10,7 +10,10 @@ service-talk-booking-code-quality:
     - poetry run isort . --check-only --profile black
     # - poetry run bandit .
     # - poetry run safety check
-
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+        - services/talk_booking/**/*
 service-talk-booking-tests:
   stage: test
   image: registry.gitlab.com/davidgranados1/talk-booking:cicd-python3.11-slim
@@ -27,3 +30,7 @@ service-talk-booking-tests:
     when: always
     reports:
       junit: services/talk_booking/report.xml
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+        - services/talk_booking/**/*
