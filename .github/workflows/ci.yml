@@ -56,15 +56,8 @@ jobs:
     needs: build-python-ci-image
     name: Code Quality
     runs-on: ubuntu-latest
-    env:
-      DOCKER_DRIVER: overlay2
-      DOCKER_TLS_CERTDIR: "/certs"
-      REGISTRY: ghcr.io
-      USERNAME: davidgranados
-      IMAGE_NAME: talk-booking
-      IMAGE_TAG: latest
     container:
-      image: ${{ env.REGISTRY }}/${{ env.USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      image: ghcr.io/davidgranados/talk-booking:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
