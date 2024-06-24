@@ -1,6 +1,5 @@
 name: DOcker Image CI for GHCR
 
-# manually trigger the workflow
 on:
   push:
     branches:
