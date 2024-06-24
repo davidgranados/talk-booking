@@ -56,10 +56,8 @@ jobs:
 
       - name: Lint
         run: |
-          cd services/talk_booking/
-          poetry install
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "flake8 ."
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "isort --check-only --profile black ."
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "black --check ."
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "bandit ."
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "safety check ."
+          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "cd services/talk_booking/ && poetry install && poetry run flake8 ."
+          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "cd services/talk_booking/ && poetry install && poetry run isort --check-only --profile black ."
+          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "cd services/talk_booking/ && poetry install && poetry run black --check ."
+          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "cd services/talk_booking/ && poetry install && poetry run bandit ."
+          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "cd services/talk_booking/ && poetry install && poetry run safety check ."
