@@ -8,9 +8,7 @@ on:
       - 'ci_cd/python/Dockerfile'
   pull_request:
     branches:
-      - dev
-    paths:
-      - 'services/talk_booking/**/*'
+      - main
 
 
 env:
