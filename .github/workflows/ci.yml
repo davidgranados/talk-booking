@@ -44,19 +44,25 @@ jobs:
     needs: build-python-ci-image
     name: Code Quality
     runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.build-python-ci-image.outputs.image }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to the container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Lint
+      - name: Set up Python environment
         run: |
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "poetry install && poetry run flake8 ."
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "poetry install && poetry run isort --check-only --profile black ."
-          docker run --rm ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} sh -c "poetry install && poetry run black --check ."
+          cd services/talk_booking/
+          poetry install
+
+      - name: Run Flake8
+        run: |
+          poetry run flake8 .
+
+      - name: Run Black
+        run: |
+          poetry run black . --check
+
+      - name: Run Isort
+        run: |
+          poetry run isort . --check-only --profile black
