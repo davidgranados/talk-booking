@@ -33,3 +33,4 @@ build-python-ci-image:
 include:
   - local: /infrastructure/global/vpc/ci-cd.yml
   - local: /services/talk_booking/ci-cd.yml
+  - local: /infrastructure/talk-booking-service/ci-cd.yml
