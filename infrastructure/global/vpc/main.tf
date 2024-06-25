@@ -6,3 +6,7 @@ terraform {
         aws = ">= 5.0, < 6.0"
     }
 }
+
+provider "aws" {
+    region = var.region
+}
