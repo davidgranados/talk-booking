@@ -17,6 +17,11 @@ talk-booking-service-validate-development:
   variables:
     TF_ROOT: ${CI_PROJECT_DIR}/infrastructure/talk-booking-service/development
     TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/talk-booking-service-development
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+      - infrastructure/talk-booking-service/development/**/*
+      - infrastructure/modules/talk-booking-service/**/*
 
 .talk-booking-service-plan:
   image: registry.gitlab.com/gitlab-org/terraform-images/releases/1.5:v1.5.1
@@ -38,6 +43,11 @@ talk-booking-service-plan-development:
   variables:
     TF_ROOT: ${CI_PROJECT_DIR}/infrastructure/talk-booking-service/development
     TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/talk-booking-service-development
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+      - infrastructure/talk-booking-service/development/**/*
+      - infrastructure/modules/talk-booking-service/**/*
 
 .talk-booking-service-apply:
   image: registry.gitlab.com/gitlab-org/terraform-images/releases/1.5:v1.5.1
@@ -57,3 +67,9 @@ talk-booking-service-apply-development:
     TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/talk-booking-service-development
   dependencies:
     - talk-booking-service-plan-development
+  rules:
+    - if: '($CI_PIPELINE_SOURCE == "merge_request_event") || ($CI_COMMIT_BRANCH == "main")'
+      when: manual
+      changes:
+      - infrastructure/talk-booking-service/development/**/*
+      - infrastructure/modules/talk-booking-service/**/*
