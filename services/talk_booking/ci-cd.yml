@@ -41,6 +41,9 @@ service-talk-booking-tests:
   stage: docker
   services:
     - docker:24.0.6-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375  # Set Docker host to communicate over TCP
+    DOCKER_TLS_CERTDIR: ""
   before_script:
     - cd services/talk_booking/
     - poetry export --without-hashes --with-credentials -f requirements.txt > requirements.txt
