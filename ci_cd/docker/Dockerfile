@@ -14,8 +14,10 @@ RUN apk --no-cache add binutils curl \
 RUN curl -sL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
     && unzip awscliv2.zip \
     && ./aws/install \
-    && rm -rf awscliv2.zip aws /var/cache/apk/* /root/.cache \
-    && ln -sf /usr/local/bin/aws2 /usr/local/bin/aws
+    && rm -rf awscliv2.zip aws /var/cache/apk/* /root/.cache
+
+# Verify AWS CLI installation
+RUN /usr/local/bin/aws --version
 
 # Set Python environment
 ENV PYTHONUNBUFFERED=1
