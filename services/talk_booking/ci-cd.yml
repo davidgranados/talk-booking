@@ -14,6 +14,7 @@ service-talk-booking-code-quality:
     - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
       changes:
         - services/talk_booking/**/*
+
 service-talk-booking-tests:
   stage: test
   image: registry.gitlab.com/davidgranados1/talk-booking:cicd-python3.11-slim
@@ -31,6 +32,28 @@ service-talk-booking-tests:
     reports:
       junit: services/talk_booking/report.xml
   rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+        - services/talk_booking/**/*
+
+.service-talk-booking-docker-image:
+  image: registry.gitlab.com/davidgranados1/talk-booking:cicd-docker
+  stage: docker
+  services:
+    - docker:24.0.6-dind
+  before_script:
+    - cd services/talk_booking/
+    - poetry export --without-hashes --with-credentials -f requirements.txt > requirements.txt
+    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 106967885159.dkr.ecr.us-east-1.amazonaws.com
+  script:
+    - docker build --pull -t "$DOCKER_IMAGE_TAG" .
+    - docker push "$DOCKER_IMAGE_TAG"
+
+service-talk-booking-docker-image-development:
+  extends: .service-talk-booking-docker-image
+  variables:
+    DOCKER_IMAGE_TAG: 106967885159.dkr.ecr.us-east-1.amazonaws.com/talk-booking-dev:development-$CI_COMMIT_SHA
+  rules: # new
     - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
       changes:
         - services/talk_booking/**/*
