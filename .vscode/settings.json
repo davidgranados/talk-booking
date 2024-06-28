@@ -20,5 +20,7 @@
   "flake8.interpreter": [
     "${workspaceFolder}/services/talk_booking/.venv/bin/python"
   ],
-  "flake8.args": ["--config", "${workspaceFolder}/services/talk_booking/.flake8"]
+  "flake8.args": ["--config", "${workspaceFolder}/services/talk_booking/.flake8"],
+
+  "python.analysis.typeCheckingMode": "basic",
 }

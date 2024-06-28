@@ -1,9 +1,11 @@
 stages:
+  - build-docker-ci-image
   - docker
   - test
   - validate
   - plan
   - apply
+  - deploy
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -19,7 +21,7 @@ build-python-ci-image:
   image: docker:24.0.6
   services:
     - docker:24.0.6-dind
-  stage: docker
+  stage: build-docker-ci-image
   before_script:
     - cd ci_cd/python/
   script:

@@ -53,7 +53,27 @@ service-talk-booking-docker-image-development:
   extends: .service-talk-booking-docker-image
   variables:
     DOCKER_IMAGE_TAG: 106967885159.dkr.ecr.us-east-1.amazonaws.com/talk-booking-dev:development-$CI_COMMIT_SHA
-  rules: # new
+  rules:
+    - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
+      changes:
+        - services/talk_booking/**/*
+
+.service-talk-booking-deploy:
+  image: registry.gitlab.com/davidgranados1/talk-booking:cicd-python3.11-slim
+  stage: deploy
+  before_script:
+    - cd services/talk_booking/
+    - pip install boto3
+  script:
+    - python deploy.py --cluster_name $ENVIRONMENT_NAME --service_name $ENVIRONMENT_NAME --new_image_uri $DOCKER_IMAGE_TAG --stage $APP_ENVIRONMENT_NAME
+
+service-talk-booking-development:
+  extends: .service-talk-booking-deploy
+  variables:
+    ENVIRONMENT_NAME: talk-booking-dev
+    APP_ENVIRONMENT_NAME: development
+    DOCKER_IMAGE_TAG: 106967885159.dkr.ecr.us-east-1.amazonaws.com/talk-booking-dev:development-$CI_COMMIT_SHA
+  rules:
     - if: '($CI_COMMIT_BRANCH == "main") || ($CI_PIPELINE_SOURCE == "merge_request_event")'
       changes:
         - services/talk_booking/**/*
