@@ -63,14 +63,21 @@ def wait_to_finish_deployment(client, cluster, service, timeout, task_definition
 
     while cnt < timeout:
         response = client.describe_services(cluster=cluster, services=[service])
-        deployment = next(depl for depl in response["services"][0]["deployments"] if depl["status"] == "PRIMARY")
-        sum_running = sum(depl["runningCount"] for depl in response["services"][0]["deployments"])
+        deployment = next(
+            depl
+            for depl in response["services"][0]["deployments"]
+            if depl["status"] == "PRIMARY"
+        )
+        sum_running = sum(
+            depl["runningCount"] for depl in response["services"][0]["deployments"]
+        )
         new_deployment_created = int(task_definition_arn.split(":")[-1]) < int(
             response["services"][0]["taskDefinition"].split(":")[-1]
         )
 
         if (
-            deployment["runningCount"] == deployment["desiredCount"] and sum_running == deployment["desiredCount"]
+            deployment["runningCount"] == deployment["desiredCount"]
+            and sum_running == deployment["desiredCount"]
         ) or new_deployment_created:
             deployment_finished = True
             break
