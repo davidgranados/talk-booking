@@ -1,5 +1,4 @@
 stages:
-  - build-main-docker-image
   - docker
   - test
   - validate
@@ -37,7 +36,7 @@ build-docker-ci-image:
   image: docker:24.0.6
   services:
     - docker:24.0.6-dind
-  stage: build-main-docker-image
+  stage: docker
   before_script:
     - cd ci_cd/docker/
   script:

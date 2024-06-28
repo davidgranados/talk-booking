@@ -44,7 +44,7 @@ service-talk-booking-tests:
   before_script:
     - cd services/talk_booking/
     - poetry export --without-hashes --with-credentials -f requirements.txt > requirements.txt
-    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 106967885159.dkr.ecr.us-east-1.amazonaws.com
+    - aws ecr get-login-password --region us-east-1
   script:
     - docker build --pull -t "$DOCKER_IMAGE_TAG" .
     - docker push "$DOCKER_IMAGE_TAG"
